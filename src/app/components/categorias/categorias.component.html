@@ -1,0 +1,119 @@
+<div class="container-xl m-2">
+  <div>
+    <button class="btn btn-success" (click)="form()">
+      Agregar cartegoria <i class="bi bi-bookmark-plus"></i>
+    </button>
+  </div>
+  <div id="form" class=" " *ngIf="hidden">
+    <div class="container d-flex justify-content-center p-4 m-4">
+      <mat-card class="example-card">
+        <div class="d-flex justify-content-end">
+          <i class="material-icons" (click)="formHidden()" >close</i>
+        </div>
+        <mat-card-header>
+          <mat-card-title>Agregar nueva categoria</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form class="">
+            <div class="m-1 p-1">
+              <label for="nombre_categoria" class="form-label"
+                >Nombre de la categoria</label
+              >
+              <input
+                type="text"
+                id="nombre_categoria"
+                [(ngModel)]="categoria.nombre_categoria"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control"
+                placeholder="Nombre de la categoria"
+              />
+            </div>
+            <div class="m-1 p-1">
+              <label for="color">Color</label>
+              <input
+                type="color"
+                [(ngModel)]="categoria.color"
+                name="color"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control form-control-color"
+              />
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            class="bg-success"
+            (click)="agregarCategoria(categoria)"
+          >
+            Agregar <i class="material-icons">add</i>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row row-cols-4">
+    <div *ngFor="let categorias of categorias" class="col">
+      <form class="form-control m-2 card">
+        <div>
+          <label for="id_categoria" class="form-label">ID</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id_categoria"
+            [(ngModel)]="categorias.id_categoria"
+            placeholder="Ingrese su nombre completo"
+            readonly
+          />
+        </div>
+        <div>
+          <label for="nombre_categoria" class="form-label"
+            >NOMBRE CATEGORIA</label
+          >
+          <input
+            type="text"
+            name="nombre_categoria"
+            class="form-control"
+            [(ngModel)]="categorias.nombre_categoria"
+            placeholder="Ingrese su nombre de la categoria"
+            required
+          />
+        </div>
+        <div>
+          <label for="color" class="form-label">COLOR</label>
+          <input
+            type="color"
+            name="color"
+            [(ngModel)]="categorias.color"
+            placeholder="Ingrese color"
+            required
+            class="form-control"
+          />
+        </div>
+        <div class="card-footer m-1 p-1 d-flex justify-content-center">
+          <button
+            class="btn btn-success m-1"
+            (click)="
+              updateCategoria(
+                categorias.id_categoria,
+                categorias.nombre_categoria,
+                categorias.color
+              )
+            "
+          >
+            Actualizar
+          </button>
+          <button
+            class="btn btn-danger m-1"
+            (click)="deleteCategoria(categorias.id_categoria)"
+          >
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div>
+  <div class="m-2 p-1">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="form()"
+      class="bg-success"
+    >
+      Agregar <i class="material-icons">playlist_add</i>
+    </button>
+  </div>
+  <div class="d-flex justify-content-center" *ngIf="hidden">
+    <form action="" id="form">
+      <mat-card>
+        <div class="d-flex justify-content-end">
+          <mat-icon (click)="formHidden()">close</mat-icon>
+        </div>
+        <mat-card-title>Agregar estado </mat-card-title>
+        <mat-card-content>
+          <label for="descripcion_estado" class="form-label"
+            >Descripción del estado</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Descripción del estado"
+            [ngModelOptions]="{ standalone: true }"
+            [(ngModel)]="estado.descripcion_estado"
+          />
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            class="bg-success"
+            (click)="createEstado(estado)"
+          >
+            Agregar estado <i class="material-icons">add</i>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+  <div class="row row-cols-4 p-2">
+    <div *ngFor="let estados of estados" mat-card-content class="col">
+      <mat-card>
+        <form action="">
+          <mat-card-content>
+            <div>
+              <label for="id_estado" class="form-label">ID Estado</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Id Estado"
+                name="id_estado"
+                [(ngModel)]="estados.id_estado"
+                readonly
+              />
+            </div>
+            <div>
+              <label for="nombre_estado" class="form-label"
+                >Descripción estado</label
+              >
+              <input
+                type="text"
+                name="descripcion_estado"
+                class="form-control"
+                [(ngModel)]="estados.descripcion_estado"
+                placeholder="Ingrese su nombre de la categoria"
+                required
+              />
+            </div>
+          </mat-card-content>
+          <mat-card-footer>
+            <div>
+              <button
+                mat-raised-button
+                color="primary"
+                class="bg-success p-1 m-1"
+                (click)="updateEstado(estados)"
+              >
+                Actualizar
+              </button>
+              <button
+                mat-raised-button
+                color="warn"
+                class="bg-danger p-1 m-1"
+                (click)="deleteEstado(estados.id_estado)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </mat-card-footer>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

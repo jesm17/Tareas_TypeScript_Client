@@ -1,0 +1,476 @@
+<div class="container container-xl p-1">
+  <!--Botones de crear usuario y de asignar tarea -->
+  <div class="example-button-row p-2 m-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="bg-success p-1 m-1"
+      aria-label="Example icon button with a delete icon"
+      (click)="form()"
+    >
+      <i class="material-icons"> person_add</i>
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      class="bg-primary p-1 m-1"
+      aria-label="Example icon button with a delete icon"
+      (click)="formA()"
+    >
+      <i class="material-icons">add_to_photos</i>
+    </button>
+  </div>
+
+  <!-- crear usuario -->
+  <div class="d-flex justify-content-center p-2" *ngIf="hidden">
+    <form>
+      <mat-card class="card">
+        <div class="d-flex justify-content-end">
+          <i class="material-icons" (click)="formHidden()">close</i>
+        </div>
+        <mat-card-title> Agregar usuario </mat-card-title>
+        <mat-card-content>
+          <div>
+            <label for="id">ID usuario</label>
+            <input
+              type="text"
+              id="id"
+              placeholder="ID del usuario"
+              name="id"
+              [(ngModel)]="usuario.id"
+              class="form-control"
+            />
+          </div>
+          <div>
+            <label for="nombre" class="form-label">Nombre del usuario</label>
+            <input
+              type="text"
+              name="nombre"
+              class="form-control"
+              id="nombre"
+              [(ngModel)]="usuario.nombre"
+              placeholder="Nombre del usuario"
+            />
+          </div>
+          <div>
+            <label for="telefono" class="form-label">Telefono</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="telefono"
+              name="telefono"
+              [(ngModel)]="usuario.telefono"
+              placeholder="Telefono del usuario"
+            />
+          </div>
+          <div>
+            <label for="correo" class="form-label">Correo</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correo"
+              name="correo"
+              required
+              [(ngModel)]="usuario.correo"
+              placeholder="Correo del usuario"
+            />
+          </div>
+          <mat-card-actions>
+            <button
+              mat-raised-button
+              color="primary"
+              class="bg-success"
+              (click)="createUsuario(usuario)"
+            >
+              Guardar <i class="material-icons"> person_add</i>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </div>
+
+  <!-- asignar tarea a usuario -->
+  <div class="d-flex justify-content-center p-2" *ngIf="hiddenA">
+    <form action="">
+      <mat-card class="card">
+        <div class="d-flex justify-content-end">
+          <i class="material-icons" (click)="formHiddenA()">close</i>
+        </div>
+        <mat-card-title>Asignar tarea a usaurio</mat-card-title>
+        <mat-card-content>
+          <mat-form-field appearance="fill" color="primary" style="width: 100%">
+            <mat-label>Usuario </mat-label>
+            <mat-select
+              [ngModelOptions]="{ standalone: true }"
+              [(ngModel)]="tarea.id_usuario_t"
+              required
+            >
+              <mat-option
+                *ngFor="let usuario of usuarios"
+                value="{{ usuario.id }}"
+                >ID: {{ usuario.id }} - Nombre: {{ usuario.nombre }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-grid-list cols="2" rowHeight="3:1">
+            <mat-grid-tile>
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Estado de la tarea</mat-label>
+                <mat-select
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="tarea.id_estado_t"
+                  required
+                >
+                  <mat-option
+                    *ngFor="let estado of estados"
+                    value="{{ estado.id_estado }}"
+                  >
+                    {{ estado.descripcion_estado }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label> Categoria </mat-label>
+                <mat-select
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="tarea.id_categoria_t"
+                  required
+                >
+                  <mat-option
+                    *ngFor="let categorias of categorias"
+                    value="{{ categorias.id_categoria }}"
+                  >
+                    {{ categorias.nombre_categoria }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field
+                color="primary"
+                appearance="fill"
+                style="width: 87%"
+              >
+                <mat-label>Fecha inicio</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker1"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="tarea.fecha_inicio"
+                  required
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field
+                color="primary"
+                appearance="fill"
+                style="width: 87%"
+              >
+                <mat-label>Fecha fin</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker2"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="tarea.fecha_fin"
+                  required
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker2"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>Descripción de la tarea </mat-label>
+            <input
+              type="text"
+              matInput
+              placeholder="Descripción de la tarea"
+              [ngModelOptions]="{ standalone: true }"
+              [(ngModel)]="tarea.descripcion_tarea"
+              required
+            />
+          </mat-form-field>
+          <mat-card-actions>
+            <button
+              mat-raised-button
+              color="primary"
+              class="bg-success"
+              (click)="asignarTarea(tarea)"
+            >
+              Asignar tarea <i class="material-icons">add_to_photos</i>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </div>
+
+  <!-- tabla de usuarios -->
+  <div class="m-4 p-4" *ngIf="hiddenT">
+    <table
+      mat-table
+      [dataSource]="user"
+      class="mat-elevation-z10 table table-hover"
+      id="table"
+    >
+      <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="ID" id="t-head">
+        <th mat-header-cell *matHeaderCellDef id="t-head">ID.</th>
+        <td mat-cell *matCellDef="let element" id="text">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="NOMBRE">
+        <th mat-header-cell *matHeaderCellDef id="t-head">NOMBRE</th>
+        <td mat-cell *matCellDef="let element" id="text">
+          {{ element.nombre }}
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="CORREO">
+        <th mat-header-cell *matHeaderCellDef id="t-head">CORREO</th>
+        <td mat-cell *matCellDef="let element" id="text">
+          {{ element.correo }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="TELEFONO">
+        <th mat-header-cell *matHeaderCellDef id="t-head">TELEFONO</th>
+        <td mat-cell *matCellDef="let element" id="text">
+          {{ element.telefono }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ACCIONES">
+        <th mat-header-cell *matHeaderCellDef id="t-head">ACCIONES</th>
+        <td mat-cell *matCellDef="let element" id="text">
+          <button
+            mat-raised-button
+            color="primary"
+            class="m-1"
+            (click)="getUsuario(element.id)"
+            (click)="hiddenTable()"
+          >
+            <i class="material-icons">visibility</i>
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            class="bg-danger m-1"
+            (click)="deleteUser(element.id)"
+          >
+            <i class="material-icons">delete</i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</div>
+<!--Actualizar informacion de usuario-->
+<div class="d-flex justify-content-center p-2 m-2">
+  <form action="">
+    <mat-card *ngFor="let usuarios of usuarios" class="card">
+      <mat-card-header>
+        <mat-card-title>Informacion del usuario</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-grid-list cols="2" rowHeight="3:1">
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>ID</mat-label>
+              <input
+                matInput
+                type="text"
+                name=""
+                id=""
+                disabled
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="usuarios.id"
+              />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Nombre</mat-label>
+              <input
+                matInput
+                type="text"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="usuarios.nombre"
+                id=""
+              />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Telefono</mat-label>
+              <input
+                type="text"
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="usuarios.telefono"
+              />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Correo</mat-label>
+              <input
+                type="text"
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="usuarios.correo"
+              />
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            class="bg-success"
+            (click)="updateUsuario(usuarios)"
+          >
+            Actualizar
+          </button>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</div>
+
+<!--Actualizar tarea -->
+<div>
+  <mat-grid-list cols="2" rowHeight="8:5">
+    <mat-grid-tile *ngFor="let tarea of tareas">
+      <mat-card class="m-2 p-2" id="tarea">
+        <mat-card-content>
+          <div class="d-flex justify-content-center">
+            <mat-form-field appearance="fill" class="p-1" color="warn">
+              <mat-label>ID</mat-label>
+              <input
+                type="text"
+                matInput
+                [(ngModel)]="tarea.id_tarea"
+                readonly
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="p-1" color="warn">
+              <mat-label>Descripcion tarea</mat-label>
+              <input
+                type="text"
+                matInput
+                [(ngModel)]="tarea.descripcion_tarea"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <mat-form-field appearance="fill" class="p-1" color="warn">
+              <mat-label>Fecha inicio</mat-label>
+
+              <input
+                matInput
+                [matDatepicker]="picker3"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="tarea.fecha_inicio"
+                required
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker3"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="p-1" color="warn">
+              <mat-label>Fecha fin</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker4"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="tarea.fecha_fin"
+                required
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker4"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <h4>
+              <i
+                *ngIf="tarea.hidden"
+                class="material-icons"
+                style="color:{{ tarea.color }}"
+                >notifications_active
+              </i>
+              {{ tarea.alert }}
+            </h4>
+          </div>
+          <div class="d-flex justify-content-center">
+            <mat-form-field appearance="fill" color="warn">
+              <mat-label>Estado de la tarea</mat-label>
+              <mat-select [(ngModel)]="tarea.id_estado_t">
+                <mat-option
+                  *ngFor="let estado of estados"
+                  [value]="estado.id_estado"
+                >
+                  {{ estado.descripcion_estado }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-card-actions class="p-1 m-1">
+            <div class="d-flex justify-content-center">
+              <button
+                mat-raised-button
+                color="primary"
+                class="bg-success"
+                (click)="updateTarea(tarea)"
+              >
+                Actualizar <i class="material-icons">loop</i>
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                class="bg-danger"
+                (click)="deleteTarea(tarea.id_tarea)"
+              >
+                Eliminar <i class="material-icons">delete</i>
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
